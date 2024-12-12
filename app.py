@@ -5,6 +5,7 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import matplotlib.pyplot as plt
 
+# models
 cnn_model = load_model('models/cnn_model.h5')
 vgg16_model = load_model('models/vgg16_model.h5')
 
