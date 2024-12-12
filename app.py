@@ -21,7 +21,7 @@ def predict(model, image):
     probabilities = predictions[0]
     return predicted_class, probabilities
 
-st.title("Image Classification Web App")
+st.title("Fashion App")
 
 st.sidebar.title("Select Model")
 model_choice = st.sidebar.radio("Choose a model:", ("CNN Model", "VGG16 Model"))
