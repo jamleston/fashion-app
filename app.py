@@ -46,7 +46,6 @@ def preprocess_image(image, target_size):
 
 def predict(model, image):
     predictions = model.predict(image)
-    st.write(f"Raw Predictions: {predictions}")
     predicted_class = int(np.argmax(predictions, axis=-1)[0])
     if predicted_class < 0 or predicted_class >= len(class_labels):
         raise ValueError(f"Predicted class {predicted_class} is out of range for class labels.")
@@ -70,8 +69,6 @@ if uploaded_file is not None:
 
     model = cnn_model if model_choice == "CNN Model" else vgg16_model
 
-    st.write(f"Preprocessed Image Shape: {preprocessed_image.shape}")
-
     predicted_class, probabilities = predict(model, preprocessed_image)
 
     st.subheader("Prediction Results")
@@ -80,5 +77,4 @@ if uploaded_file is not None:
     for i, prob in enumerate(probabilities):
         st.write(f"{class_labels[i]}: {prob:.4f}")
 
-    st.write("Note: Add loss/accuracy graphs if you have saved them.")
 
