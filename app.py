@@ -61,3 +61,4 @@ if uploaded_file is not None:
         st.write(f"Class {i}: {prob:.4f}")
 
     st.write("Note: Add loss/accuracy graphs if you have saved them.")
+
