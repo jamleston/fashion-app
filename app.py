@@ -12,10 +12,10 @@ os.makedirs('models', exist_ok=True)
 
 # models
 cnn_model_url = "https://drive.google.com/uc?id=1Ka9r40Z3bv3EzUuKgGVEeRy663Qme-ry"
-vgg16_model_url = "https://drive.google.com/uc?id=1xQNCeJ44RKszqQ_PlWXnqK2qaf2kgQvL"
+vgg16_model_url = "https://drive.google.com/uc?id=1Mfsz4gGkHlctDR41XzuMTnSBF7l-o_ob"
 
 cnn_model_path = "models/cnn_model.h5"
-vgg16_model_path = "models/vgg16_model.h5"
+vgg16_model_path = "models/vgg16_full_model.h5"
 
 if not os.path.exists(cnn_model_path):
     gdown.download(cnn_model_url, cnn_model_path, quiet=False)
