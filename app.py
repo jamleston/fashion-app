@@ -25,6 +25,19 @@ if not os.path.exists(vgg16_model_path):
 cnn_model = load_model(cnn_model_path)
 vgg16_model = load_model(vgg16_model_path)
 
+class_labels = [
+    "T-shirt/top",
+    "Trouser",
+    "Pullover",
+    "Dress",
+    "Coat",
+    "Sandal",
+    "Shirt", 
+    "Sneaker",
+    "Bag",
+    "Ankle boot"
+]
+
 def preprocess_image(image, target_size):
     image = image.resize(target_size)
     image = np.array(image) / 255.0
@@ -33,7 +46,10 @@ def preprocess_image(image, target_size):
 
 def predict(model, image):
     predictions = model.predict(image)
-    predicted_class = np.argmax(predictions, axis=-1)[0]
+    st.write(f"Raw Predictions: {predictions}")
+    predicted_class = int(np.argmax(predictions, axis=-1)[0])
+    if predicted_class < 0 or predicted_class >= len(class_labels):
+        raise ValueError(f"Predicted class {predicted_class} is out of range for class labels.")
     probabilities = predictions[0]
     return predicted_class, probabilities
 
@@ -48,17 +64,21 @@ if uploaded_file is not None:
     st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
     image = Image.open(uploaded_file)
 
-    preprocessed_image = preprocess_image(image, target_size=(224, 224))
+    target_size = (32, 32)
+
+    preprocessed_image = preprocess_image(image, target_size=(32, 32))
 
     model = cnn_model if model_choice == "CNN Model" else vgg16_model
+
+    st.write(f"Preprocessed Image Shape: {preprocessed_image.shape}")
 
     predicted_class, probabilities = predict(model, preprocessed_image)
 
     st.subheader("Prediction Results")
-    st.write(f"Predicted Class: {predicted_class}")
+    st.write(f"Predicted Class: {class_labels[predicted_class]}")
     st.write("Class Probabilities:")
     for i, prob in enumerate(probabilities):
-        st.write(f"Class {i}: {prob:.4f}")
+        st.write(f"{class_labels[i]}: {prob:.4f}")
 
     st.write("Note: Add loss/accuracy graphs if you have saved them.")
 
