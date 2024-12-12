@@ -4,10 +4,26 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from PIL import Image
 import matplotlib.pyplot as plt
+import os
+import gdown
+
+
+os.makedirs('models', exist_ok=True)
 
 # models
-cnn_model = load_model('models/cnn_model.h5')
-vgg16_model = load_model('models/vgg16_model.h5')
+cnn_model_url = "https://drive.google.com/uc?id=1Ka9r40Z3bv3EzUuKgGVEeRy663Qme-ry"
+vgg16_model_url = "https://drive.google.com/uc?id=1xQNCeJ44RKszqQ_PlWXnqK2qaf2kgQvL"
+
+cnn_model_path = "models/cnn_model.h5"
+vgg16_model_path = "models/vgg16_model.h5"
+
+if not os.path.exists(cnn_model_path):
+    gdown.download(cnn_model_url, cnn_model_path, quiet=False)
+if not os.path.exists(vgg16_model_path):
+    gdown.download(vgg16_model_url, vgg16_model_path, quiet=False)
+
+cnn_model = load_model(cnn_model_path)
+vgg16_model = load_model(vgg16_model_path)
 
 def preprocess_image(image, target_size):
     image = image.resize(target_size)
