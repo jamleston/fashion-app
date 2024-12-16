@@ -52,7 +52,17 @@ def predict(model, image):
     probabilities = predictions[0]
     return predicted_class, probabilities
 
-st.title("Fashion App")
+def plot_probabilities(probabilities, class_labels):
+    plt.figure(figsize=(10, 5))
+    plt.bar(class_labels, probabilities, color='skyblue')
+    plt.xlabel('Classes')
+    plt.ylabel('Probabilities')
+    plt.title('Predicted Probabilities for Each Class')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    st.pyplot(plt)
+
+st.title("Fashion App 👗👕👠👜🧥👞")
 
 st.sidebar.title("Select Model")
 model_choice = st.sidebar.radio("Choose a model:", ("CNN Model", "VGG16 Model"))
@@ -72,9 +82,12 @@ if uploaded_file is not None:
     predicted_class, probabilities = predict(model, preprocessed_image)
 
     st.subheader("Prediction Results")
-    st.write(f"Predicted Class: {class_labels[predicted_class]}")
+    st.markdown(f"**Predicted Class:** <span style='color:red;'>{class_labels[predicted_class]}</span>", unsafe_allow_html=True)
     st.write("Class Probabilities:")
     for i, prob in enumerate(probabilities):
         st.write(f"{class_labels[i]}: {prob:.4f}")
+
+    st.subheader("Probability in a graph :)")
+    plot_probabilities(probabilities, class_labels)
 
 
