@@ -62,6 +62,7 @@ def plot_probabilities(probabilities, class_labels):
     plt.tight_layout()
     st.pyplot(plt)
 
+# app
 st.title("Fashion App 👗👕👠👜🧥👞")
 
 st.sidebar.title("Select Model")
