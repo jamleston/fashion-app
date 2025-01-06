@@ -7,24 +7,28 @@ import matplotlib.pyplot as plt
 import os
 import gdown
 
-
+# Ensure the 'models' directory exists
 os.makedirs('models', exist_ok=True)
 
-# models
+# Models URL on google drive
 cnn_model_url = "https://drive.google.com/uc?id=1Ka9r40Z3bv3EzUuKgGVEeRy663Qme-ry"
 vgg16_model_url = "https://drive.google.com/uc?id=1Mfsz4gGkHlctDR41XzuMTnSBF7l-o_ob"
 
+# Local paths
 cnn_model_path = "models/cnn_model.h5"
 vgg16_model_path = "models/vgg16_full_model.h5"
 
+# Download if it doesn't already exist locally
 if not os.path.exists(cnn_model_path):
     gdown.download(cnn_model_url, cnn_model_path, quiet=False)
 if not os.path.exists(vgg16_model_path):
     gdown.download(vgg16_model_url, vgg16_model_path, quiet=False)
 
+# Load the pre-trained models
 cnn_model = load_model(cnn_model_path)
 vgg16_model = load_model(vgg16_model_path)
 
+# Labels for app
 class_labels = [
     "T-shirt/top",
     "Trouser",
@@ -38,12 +42,14 @@ class_labels = [
     "Ankle boot"
 ]
 
+# Function to preprocess the input image
 def preprocess_image(image, target_size):
     image = image.resize(target_size)
     image = np.array(image) / 255.0
     image = np.expand_dims(image, axis=0)
     return image
 
+# Function to make predictions
 def predict(model, image):
     predictions = model.predict(image)
     predicted_class = int(np.argmax(predictions, axis=-1)[0])
@@ -52,6 +58,7 @@ def predict(model, image):
     probabilities = predictions[0]
     return predicted_class, probabilities
 
+# Bar graph
 def plot_probabilities(probabilities, class_labels):
     plt.figure(figsize=(10, 5))
     plt.bar(class_labels, probabilities, color='skyblue')
@@ -62,7 +69,7 @@ def plot_probabilities(probabilities, class_labels):
     plt.tight_layout()
     st.pyplot(plt)
 
-# app
+# App
 st.title("Fashion App 👗👕👠👜🧥👞")
 
 st.sidebar.title("Select Model")
@@ -70,6 +77,7 @@ model_choice = st.sidebar.radio("Choose a model:", ("CNN Model", "VGG16 Model"))
 
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
+# Process and predict if an image is uploaded
 if uploaded_file is not None:
     st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
     image = Image.open(uploaded_file)
